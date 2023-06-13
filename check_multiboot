@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+
+if grub-file --is-x86-multiboot out/clos.elf; then
+	echo Multiboot confirmed
+else
+	echo NOT MULTIBOOT
+fi
