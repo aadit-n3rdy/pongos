@@ -1,0 +1,36 @@
+[
+  {
+    "arguments": [
+      "/home/n3rdy/.local/cross/bin/i686-elf-gcc",
+      "-Wall",
+      "-ffreestanding",
+      "-Wextra",
+      "-std=c99",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "obj/kernel.c.o",
+      "src/kernel.c"
+    ],
+    "directory": "/home/n3rdy/dev/c/clos",
+    "file": "/home/n3rdy/dev/c/clos/src/kernel.c",
+    "output": "/home/n3rdy/dev/c/clos/obj/kernel.c.o"
+  },
+  {
+    "arguments": [
+      "/home/n3rdy/.local/cross/bin/i686-elf-gcc",
+      "-Wall",
+      "-ffreestanding",
+      "-Wextra",
+      "-std=c99",
+      "-Iinclude",
+      "-c",
+      "-o",
+      "obj/terminal.c.o",
+      "src/terminal.c"
+    ],
+    "directory": "/home/n3rdy/dev/c/clos",
+    "file": "/home/n3rdy/dev/c/clos/src/terminal.c",
+    "output": "/home/n3rdy/dev/c/clos/obj/terminal.c.o"
+  }
+]

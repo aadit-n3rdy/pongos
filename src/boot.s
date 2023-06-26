@@ -22,6 +22,7 @@ stack_top:
 _start:
 	mov $stack_top, %esp
 	mov $stack_bottom, %ebp
+
 	call kernel_main
 
 _boot_hlt:
