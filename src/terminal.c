@@ -1,5 +1,6 @@
 
 #include "terminal.h"
+#include "util.h"
 
 #define COLS 80
 #define ROWS 25
@@ -44,8 +45,18 @@ void term_putchar(unsigned char fg, unsigned char bg, char c) {
 }
 
 void term_puts(char *str) {
+	char *start = str;
 	while (*str != '\0') {
 		term_putchar(TERM_DEFAULT_FG, TERM_DEFAULT_BG, *str);
 		str++;
 	}
+	if (start == str) {
+		term_puts("WARN: Empty string\n");
+	}
+}
+
+void term_put_uint(unsigned int d, int base) {
+	char buf[32];
+	utoa(d, buf, base);
+	term_puts(buf);
 }

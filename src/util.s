@@ -1,14 +1,12 @@
 
-.section .text
+section .text
 
-.global get_msw
-.type get_msw, @function
+global get_msw
 get_msw:
-	push %ebp
-	movl %esp, %ebp
+	push ebp
+	mov ebp, esp
 
-	smsw %eax
+	smsw eax
 
-	popl %ebp
+	pop ebp
 	ret
-.size get_msw, . - get_msw

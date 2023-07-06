@@ -1,6 +1,6 @@
 CC:=i686-elf-gcc
 
-AS:=i686-elf-as
+AS:=nasm -felf32
 
 CFLAGS:=-Wall -ffreestanding -Wextra -std=c99 -Iinclude
 

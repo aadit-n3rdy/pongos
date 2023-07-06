@@ -35,4 +35,6 @@ void term_putchar(unsigned char fg, unsigned char bg, char c);
 
 void term_puts(char *str);
 
+void term_put_uint(unsigned int d, int base);
+
 #endif
