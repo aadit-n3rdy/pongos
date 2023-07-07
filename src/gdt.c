@@ -3,9 +3,6 @@
 #include "terminal.h"
 #include "util.h"
 
-unsigned short int _GDT_LEN = 96;
-unsigned char _GDT[96];
-
 int gdt_encode_entry(unsigned char *res, struct gdt_entry e)  {
 	res[7] = ((unsigned long int)e.base >> 24) & 0xff;
 	res[6] = ((e.flags & 15) << 4) | (((unsigned long int)e.limit >> 16) & 15);
@@ -18,7 +15,7 @@ int gdt_encode_entry(unsigned char *res, struct gdt_entry e)  {
 	return 0;
 }
 
-int gdt_fill() {
+int gdt_fill(void* gdt_begin, void *gdt_end) {
 	term_puts("Filling gdt\n");
 	term_puts("\n");
 	struct gdt_entry gdt_entries[] = {
@@ -40,19 +37,20 @@ int gdt_fill() {
 		{0, 0, 0, 0}
 	};
 	int gdt_count = sizeof(gdt_entries)/sizeof(gdt_entries[0]);
+	int gdt_total = (gdt_end - gdt_begin)>>3;
 
-	term_puts("GDT size: ");
-	term_put_uint(sizeof(_GDT), 10);
+	term_puts("GDT max. no. of entries: ");
+	term_put_uint(gdt_total, 10);
 	term_puts("\n");
 
 	int i;
 	for (i = 0; i < gdt_count; i++) {
-		gdt_encode_entry(_GDT + (i << 3), gdt_entries[i]);
+		gdt_encode_entry(gdt_begin + (i << 3), gdt_entries[i]);
 	}
 	term_puts("Encoded entries\n");
-	for (; i < (_GDT_LEN>>3); i++) {
+	for (; i < (gdt_total); i++) {
 		// use NULL entry for all others
-		gdt_encode_entry(_GDT + (i << 3), gdt_entries[0]);
+		gdt_encode_entry(gdt_begin + (i << 3), gdt_entries[0]);
 	}
 
 	term_puts("Returning from gdt_fill\n");

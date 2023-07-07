@@ -5,7 +5,7 @@ AS:=nasm -felf32
 CFLAGS:=-Wall -ffreestanding -Wextra -std=c99 -Iinclude
 
 SRC_C:=$(wildcard src/*.c)
-SRC_S:=$(wildcard src/*.s)
+SRC_S:=$(wildcard src/*.asm)
 
 OBJ_C:=$(addsuffix .o,$(patsubst src/%,obj/%,$(SRC_C)))
 OBJ_S:=$(addsuffix .o,$(patsubst src/%,obj/%,$(SRC_S)))
@@ -31,7 +31,7 @@ out/clos.elf: $(OBJ_C) $(OBJ_S)
 obj/%.c.o: src/%.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
-obj/%.s.o: src/%.s
+obj/%.asm.o: src/%.asm
 	$(AS) -o $@ $<
 
 clean:
