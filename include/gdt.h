@@ -8,6 +8,9 @@ struct gdt_entry {
 	unsigned char access;
 };
 
+//extern void *_GDT;
+//extern void *_GDT_END;
+
 int gdt_encode_entry(unsigned char *res, struct gdt_entry e);
 
 int gdt_init();

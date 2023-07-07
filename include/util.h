@@ -10,4 +10,6 @@ void timedelay_exp(int level);
 // Wait for some amount of time, amount of time increases exponentially with exp. 
 // Use maybe 6 or 7
 
+void kern_exit();
+
 #endif

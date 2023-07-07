@@ -13,6 +13,9 @@ void kernel_main() {
 	term_put_uint(gdt_init(), 16);
 	term_putchar(TERM_DEFAULT_BG, TERM_DEFAULT_FG, '\n');
 
+	gdt_init();
+	term_puts("huh, inited gdt?\n");
+
 	unsigned int msw = get_msw();
 	if (msw & 1) {
 		term_puts("PROTECTED MODE\n");

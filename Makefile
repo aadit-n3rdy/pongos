@@ -17,10 +17,10 @@ out/clos.iso: out/clos.elf multiboot
 	grub-mkrescue -o out/clos.iso isodir
 
 qemu: multiboot out/clos.iso
-	qemu-system-i386 -cdrom out/clos.iso
+	qemu-system-i386 -no-reboot -cdrom out/clos.iso
 
 qemu_kernel: multiboot out/clos.elf
-	qemu-system-i386 -kernel out/clos.elf
+	qemu-system-i386 -no-reboot -kernel out/clos.elf
 
 multiboot: out/clos.elf
 	./check_multiboot

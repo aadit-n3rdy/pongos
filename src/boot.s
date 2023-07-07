@@ -27,4 +27,9 @@ _start:
 	call kernel_main
 
 _boot_hlt:
+	hlt
+	jmp _boot_hlt
+
+global kern_exit
+kern_exit:
 	jmp _boot_hlt

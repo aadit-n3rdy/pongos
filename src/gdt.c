@@ -1,6 +1,10 @@
 
 #include "gdt.h"
 #include "terminal.h"
+#include "util.h"
+
+unsigned short int _GDT_LEN = 96;
+unsigned char _GDT[96];
 
 int gdt_encode_entry(unsigned char *res, struct gdt_entry e)  {
 	res[7] = ((unsigned long int)e.base >> 24) & 0xff;
@@ -14,9 +18,8 @@ int gdt_encode_entry(unsigned char *res, struct gdt_entry e)  {
 	return 0;
 }
 
-void gdt_fill(void *gdt_begin, void *gdt_end) {
+int gdt_fill() {
 	term_puts("Filling gdt\n");
-	term_put_uint((gdt_end - gdt_begin)/(sizeof(int)), 10);
 	term_puts("\n");
 	struct gdt_entry gdt_entries[] = {
 		{0, 0, 0, 0},
@@ -34,6 +37,25 @@ void gdt_fill(void *gdt_begin, void *gdt_end) {
 		
 		// task 
 		// TODO: Set VALID TSS
-		{0, 0, 0, 0x89}
+		{0, 0, 0, 0}
 	};
+	int gdt_count = sizeof(gdt_entries)/sizeof(gdt_entries[0]);
+
+	term_puts("GDT size: ");
+	term_put_uint(sizeof(_GDT), 10);
+	term_puts("\n");
+
+	int i;
+	for (i = 0; i < gdt_count; i++) {
+		gdt_encode_entry(_GDT + (i << 3), gdt_entries[i]);
+	}
+	term_puts("Encoded entries\n");
+	for (; i < (_GDT_LEN>>3); i++) {
+		// use NULL entry for all others
+		gdt_encode_entry(_GDT + (i << 3), gdt_entries[0]);
+	}
+
+	term_puts("Returning from gdt_fill\n");
+
+	return 0;
 }
