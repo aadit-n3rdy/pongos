@@ -1,12 +1,14 @@
 
+section .bss
+_GDT_BEGIN:
+resb 96
+_GDT_END:
+
 section .data
 message db 'Exited from gdt_fill', 10, 0
 newline db 10, 0
 gdtr dw 0
 dd 0 
-_GDT_BEGIN:
-times 96 db 0
-_GDT_END:
 
 section .text
 
