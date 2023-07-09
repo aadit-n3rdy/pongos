@@ -10,6 +10,15 @@ newline db 10, 0
 gdtr dw 0
 dd 0 
 
+global SEGDESC_KERNEL_DATA
+global SEGDESC_KERNEL_CODE
+global SEGDESC_USER_DATA
+global SEGDESC_USER_CODE
+SEGDESC_KERNEL_DATA dw 08h
+SEGDESC_KERNEL_CODE dw 10h
+SEGDESC_USER_DATA   dw 18h
+SEGDESC_USER_CODE   dw 20h
+
 section .text
 
 extern term_puts
@@ -40,9 +49,10 @@ gdt_init:
 
 	xor eax, eax
 
-
+	
 	lgdt [gdtr]
-	call 0x10:flush_gdt ; 0x10: offset of code segment (index 2, type 0 gdt, rpl 0)
+
+	call 10h:flush_gdt
 
 	mov esp, ebp
 	pop ebp
@@ -51,7 +61,7 @@ gdt_init:
 	ret
 
 flush_gdt:
-	mov ax, 0x08 ; 0x08: offset of data segment (index 1, type 0 gdt, rpl 0)
+	mov ax, [SEGDESC_KERNEL_DATA]
 	mov ds, ax
 	mov es, ax
 	mov fs, ax

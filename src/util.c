@@ -31,3 +31,13 @@ void timedelay_exp(int level) {
 	}
 }
 
+void *memcpy(void *dest, void* src, unsigned int n) {
+	char *d = dest;
+	char *s = src;
+	while (n--) {
+		*d = *s;
+		d++;
+		s++;
+	}
+	return dest;
+}

@@ -8,8 +8,10 @@ struct gdt_entry {
 	unsigned char access;
 };
 
-//extern void *_GDT;
-//extern void *_GDT_END;
+extern unsigned short int SEGDESC_KERNEL_DATA;
+extern unsigned short int SEGDESC_KERNEL_CODE;
+extern unsigned short int SEGDESC_USER_DATA;
+extern unsigned short int SEGDESC_USER_CODE;
 
 int gdt_encode_entry(unsigned char *res, struct gdt_entry e);
 

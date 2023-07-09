@@ -1,0 +1,5 @@
+
+config_interface: textconfig
+ata0-master: type=cdrom, path=out/clos.iso, status=inserted
+boot: cdrom
+magic_break: enabled=1

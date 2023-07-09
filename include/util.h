@@ -12,4 +12,7 @@ void timedelay_exp(int level);
 
 void kern_exit();
 
+void *memcpy(void *dest, void *src, unsigned int n);
+// Pretty much just memcpy from the C standard library
+
 #endif
