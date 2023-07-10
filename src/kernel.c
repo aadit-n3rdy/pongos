@@ -4,6 +4,8 @@
 #include "gdt.h"
 #include "idt.h"
 
+#include "config.h"
+
 void kernel_main() {
 	term_puts("Hello World!!\n01234\n");
 
@@ -28,9 +30,20 @@ void kernel_main() {
 
 	idt_init();
 
-	term_puts("\nhuh, inited idt? maybe ill try triggering an int\n");
-	__asm__ ("int $0x10");
+	term_puts("\nhuh, inited idt?\n");
+
+#ifdef TEST_INT
+	term_puts("Testing interrupts, will exit after this. Should trigger int 0x08 \
+with err code 0x10\n");
+	__asm__ ("pushl $0x10; int $0x08");
 	term_puts("Ok lets hope that worked\n\n");
+#endif
+
+#ifdef TEST_HIGHINT
+	term_puts("Testing interrupt beyond 32, should continue after this\n");
+	__asm__ volatile ("int $0x20");
+	term_puts("Ok lets hope that worked\n\n");
+#endif
 
 	term_puts("Exiting kernel...\n");
 }

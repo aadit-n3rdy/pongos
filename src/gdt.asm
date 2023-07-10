@@ -21,16 +21,12 @@ SEGDESC_USER_CODE   dw 20h
 
 section .text
 
-extern term_puts
 extern gdt_fill
-extern timedelay_exp
-extern term_put_uint
 
 global gdt_init
 gdt_init:
 	push ebp
 	mov ebp, esp
-	sub esp, 16
 
 	push _GDT_END
 	push _GDT_BEGIN
@@ -38,7 +34,7 @@ gdt_init:
 	add esp, 8
 	cmp eax, 0
 
-	jz _gdt_fill_success
+	je _gdt_fill_success
 	ret
 
 	_gdt_fill_success:
@@ -48,15 +44,13 @@ gdt_init:
 	mov dword [gdtr+2], _GDT_BEGIN
 
 	xor eax, eax
-
 	
 	lgdt [gdtr]
 
-	call 10h:flush_gdt
+	jmp 10h:flush_gdt
+	flush_ret:
 
-	mov esp, ebp
 	pop ebp
-
 	mov eax, 0
 	ret
 
@@ -67,5 +61,5 @@ flush_gdt:
 	mov fs, ax
 	mov gs, ax
 	mov ss, ax
-	ret
+	jmp flush_ret
 

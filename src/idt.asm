@@ -1,4 +1,5 @@
 
+
 section .bss
 _IDT_BEGIN:
 resb 2048
@@ -9,14 +10,14 @@ _IDTR:
 dw 0
 dd 0
 debug_msg db 'Max IDT entries: ', 0
+exit_msg db 'Exiting idt_init', 10, 0
 newline db 10, 0
 
-extern isr_default
 extern SEGDESC_KERNEL_CODE
 extern idt_fill
-extern timedelay_exp
 extern term_puts
 extern term_put_uint
+extern ISR_TABLE
 
 section .text
 
@@ -24,7 +25,6 @@ global idt_init
 idt_init:
 	push ebp
 	mov ebp, esp
-	sub esp, 24
 
 	push debug_msg
 	call term_puts
@@ -50,19 +50,21 @@ idt_init:
 	call term_puts
 	add esp, 4
 
+	push ISR_TABLE
 	push _IDT_BEGIN
 	call idt_fill
-	add esp, 4
+	add esp, 8
 
-	mov word [_IDTR], 255
+	mov word [_IDTR], _IDT_END - _IDT_BEGIN - 1
 	mov dword [_IDTR + 2], _IDT_BEGIN
 	mov eax, _IDTR
 	lidt [eax]
 
-	xchg bx, bx ;Bochs magic break
-
 	sti
 
-	mov esp, ebp
+	push exit_msg
+	call term_puts
+	add esp, 4
+
 	pop ebp
 	ret
