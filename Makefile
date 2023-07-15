@@ -2,7 +2,7 @@ CC:=i686-elf-gcc
 
 AS:=nasm -felf32
 
-CFLAGS:=-Wall -ffreestanding -Wextra -std=c99 -Iinclude
+CFLAGS:=-g -Wall -ffreestanding -Wextra -std=c99 -Iinclude
 
 SRC_C:=$(wildcard src/*.c)
 SRC_S:=$(wildcard src/*.asm)
@@ -13,7 +13,7 @@ OBJ_S:=$(addsuffix .o,$(patsubst src/%,obj/%,$(SRC_S)))
 OUT_ELF := out/clos.elf
 OUT_BIN := out/clos.bin
 
-# .PHONY: qemu qemu_kernel multiboot clean
+.PHONY: qemu qemu_kernel multiboot clean
 
 out/clos.iso: $(OUT_BIN) $(OUT_ELF) multiboot
 	cp $(OUT_BIN) isodir/boot/

@@ -1,5 +1,4 @@
 
-
 section .bss
 _IDT_BEGIN:
 resb 2048
@@ -18,6 +17,7 @@ extern idt_fill
 extern term_puts
 extern term_put_uint
 extern ISR_TABLE
+extern pic_isr_kb
 
 section .text
 
@@ -33,13 +33,9 @@ idt_init:
 	mov eax, _IDT_END
 	sub eax, _IDT_BEGIN
 
-	push edx
-	push edi
-	mov edx, 0
-	mov edi, 8
-	div edi
-	pop edi
-	pop edx
+	xor edx, edx
+	mov ecx, 8
+	div ecx
 
 	push dword 10
 	push eax
@@ -50,21 +46,24 @@ idt_init:
 	call term_puts
 	add esp, 4
 
+	push eax
+	push edx
+	push ecx
+
+	mov dword [ISR_TABLE+33*4], pic_isr_kb
+
 	push ISR_TABLE
 	push _IDT_BEGIN
 	call idt_fill
 	add esp, 8
 
+	pop ecx
+	pop edx
+	pop eax
+
 	mov word [_IDTR], _IDT_END - _IDT_BEGIN - 1
 	mov dword [_IDTR + 2], _IDT_BEGIN
-	mov eax, _IDTR
-	lidt [eax]
-
-	sti
-
-	push exit_msg
-	call term_puts
-	add esp, 4
+	lidt [_IDTR]
 
 	pop ebp
 	ret

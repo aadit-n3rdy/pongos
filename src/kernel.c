@@ -3,6 +3,8 @@
 #include "util.h"
 #include "gdt.h"
 #include "idt.h"
+#include "io.h"
+#include "pic.h"
 
 #include "config.h"
 
@@ -41,9 +43,20 @@ with err code 0x10\n");
 
 #ifdef TEST_HIGHINT
 	term_puts("Testing interrupt beyond 32, should continue after this\n");
-	__asm__ volatile ("int $0x20");
+	__asm__ volatile ("int $0x30");
 	term_puts("Ok lets hope that worked\n\n");
 #endif
 
-	term_puts("Exiting kernel...\n");
+	pic_init();
+
+	term_puts("Done initing PIC\n");
+	term_puts("Enabling interrupts\n");
+	__asm__ volatile("sti");
+
+	pic_setmask(0xffff ^ (1<<1));
+
+	while(1) {
+	}
+
+	term_puts("Exiting kernel\n");
 }

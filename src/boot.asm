@@ -12,16 +12,16 @@ align 4
 
 section .bss
 align 16
-stack_bottom:
-resb 16384
 stack_top:
+resb 16384
+stack_bottom:
 
 extern kernel_main
 
 section .text
 global _start
 _start:
-	mov esp, stack_top
+	mov esp, stack_bottom
 	mov ebp, stack_bottom
 
 	call kernel_main

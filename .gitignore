@@ -1,3 +1,4 @@
 obj/**.c.o
 obj/**.asm.o
 .cache/**
+virtbox/**
